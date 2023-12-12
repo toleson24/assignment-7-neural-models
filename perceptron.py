@@ -33,6 +33,7 @@ class Perceptron:
         """
         string = "Perceptron\n"
         for i, t_datum in enumerate(self.training_data):
+            string += f"Example {i + 1:2.0f}: "
             weights_str = "["
             for j, w in enumerate(self.weights[i]):
                 weights_str += f"{w: 2.2f}"
