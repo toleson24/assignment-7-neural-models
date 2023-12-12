@@ -62,10 +62,14 @@ class Perceptron:
             print(total_correct)
             if total_correct == len(self.outputs):
                 not_converged = False
-            # else:
-            #     total_correct = 0
 
     def _compute_output(self, example_num: int):
+        """
+        Private method for Perceptron that a sum of weighted inputs and runs that through an activation function
+
+        :param example_num: index for a list of inputs and a list weights
+        :return: the ReLU value for a list of weighted inputs
+        """
         output_sum = 0
         for input_, weight in zip(self.inputs[example_num], self.weights[example_num]):
             output_sum += input_ * weight
@@ -73,12 +77,25 @@ class Perceptron:
         return output
 
     def _calculate_weights(self, example_num, error):
+        """
+        Private method for Perceptron that updates its own weights based on the error provided. See __init__() for
+        default alpha value.
+
+        :param example_num: index for a list of inputs to be updated
+        :param error: error calculated to updated individual weights
+        """
         for i, w in enumerate(self.weights[example_num]):
-            # self.weights[example_num][i] = w + self.alpha * self.training_data[example_num][INPUT][i] * error
             self.weights[example_num][i] = w + self.alpha * self.inputs[example_num][i] * error
 
 
 def ReLU(input_: int):
+    """
+    Rectified Linear Unit (ReLU) activation function.
+    The ReLU function returns 1 if the input is greater than 0, and 0 otherwise.
+
+    :param input_: input value to be checked
+    :return: 0 or 1
+    """
     if input_ > 0:
         return 1
     else:
