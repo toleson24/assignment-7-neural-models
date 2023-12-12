@@ -51,8 +51,8 @@ class Perceptron:
         Method used to adjust the weights of the Perceptron based on the training data provided.
         """
         not_converged = True
-        total_correct = 0
         while not_converged:
+            total_correct = 0
             for i, t_datum in enumerate(self.training_data):
                 o = self._compute_output(example_num=i)
                 E = t_datum[OUTPUT] - o
@@ -74,11 +74,12 @@ class Perceptron:
 
     def _calculate_weights(self, example_num, error):
         for i, w in enumerate(self.weights[example_num]):
-            self.weights[example_num][i] = w + self.alpha * self.training_data[example_num][INPUT][i] * error
+            # self.weights[example_num][i] = w + self.alpha * self.training_data[example_num][INPUT][i] * error
+            self.weights[example_num][i] = w + self.alpha * self.inputs[example_num][i] * error
 
 
 def ReLU(input_: int):
     if input_ > 0:
-        return input_
+        return 1
     else:
         return 0
