@@ -20,6 +20,9 @@ if __name__ == "__main__":
     outputs = [1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0]
 
     # create a perceptron using the default alpha=0.5 and bias=-0.5
+    # p = perceptron.Perceptron(inputs=inputs, outputs=outputs, random=False)
     p = perceptron.Perceptron(inputs=inputs, outputs=outputs)
     print(p)
-    print(len(p))
+
+    p.train()
+    print(p)
