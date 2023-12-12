@@ -5,7 +5,7 @@ OUTPUT = 1
 
 
 class Perceptron:
-    def __init__(self, inputs: list, outputs: list, alpha=0.1, bias=-0.1):
+    def __init__(self, inputs: list, outputs: list, alpha=0.1, bias=-0.1, random=True):
         """
         Constructor for a Perceptron. Initializes the list of weights to random number between -0.5 and 0.5.
         Initializes training_data to a list of tuples containing the corresponding inputs with an output.
@@ -18,7 +18,10 @@ class Perceptron:
         self.alpha = alpha
         self.bias = bias
         self.inputs = inputs
-        self.weights = [[uniform(-0.5, 0.5) for i in range(len(inputs[0]))] for j in range(len(inputs))]
+        if random:
+            self.weights = [[uniform(-0.5, 0.5) for i in range(len(inputs[0]))] for j in range(len(inputs))]
+        else:
+            self.weights = [[0.0 for i in range(len(inputs[0]))] for j in range(len(inputs))]
         self.outputs = outputs
         self.training_data = [(input_, output_) for i, (input_, output_) in enumerate(zip(inputs, outputs))]
 
@@ -48,16 +51,34 @@ class Perceptron:
         Method used to adjust the weights of the Perceptron based on the training data provided.
         """
         not_converged = True
-        total_error = 0
+        total_correct = 0
         while not_converged:
-            for t_datum in self.training_data:
-                o = self._compute_output()
+            for i, t_datum in enumerate(self.training_data):
+                o = self._compute_output(example_num=i)
                 E = t_datum[OUTPUT] - o
-                total_error += abs(E)  # TODO: ask if correct & ask about abs(E)
-                for i, w in enumerate(self.weights):
-                    self.weights[i] = (w[i] + self.alpha) * t_datum[INPUT] * E
-            if total_error < self.bias:
+                if o == self.outputs[i]:
+                    total_correct += 1
+                self._calculate_weights(example_num=i, error=E)
+            print(total_correct)
+            if total_correct == len(self.outputs):
                 not_converged = False
+            # else:
+            #     total_correct = 0
 
-    def _compute_output(self):
-        return self.outputs
+    def _compute_output(self, example_num: int):
+        output_sum = 0
+        for input_, weight in zip(self.inputs[example_num], self.weights[example_num]):
+            output_sum += input_ * weight
+        output = ReLU(output_sum)
+        return output
+
+    def _calculate_weights(self, example_num, error):
+        for i, w in enumerate(self.weights[example_num]):
+            self.weights[example_num][i] = w + self.alpha * self.training_data[example_num][INPUT][i] * error
+
+
+def ReLU(input_: int):
+    if input_ > 0:
+        return input_
+    else:
+        return 0
