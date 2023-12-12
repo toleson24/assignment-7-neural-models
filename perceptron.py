@@ -18,7 +18,7 @@ class Perceptron:
         self.alpha = alpha
         self.bias = bias
         self.inputs = inputs
-        self.weights = [[uniform(-0.5, 0.5)] for i in range(len(inputs)) for j in range(len(inputs[i]))]
+        self.weights = [[uniform(-0.5, 0.5) for i in range(len(inputs[0]))] for j in range(len(inputs))]
         self.outputs = outputs
         self.training_data = [(input_, output_) for i, (input_, output_) in enumerate(zip(inputs, outputs))]
 
@@ -26,9 +26,20 @@ class Perceptron:
         return len(self.weights)
 
     def __str__(self):
+        """
+        An overly complex, but pretty--and readable--customized string representation of this Perceptron
+
+        :return: string representation of this Perceptron
+        """
         string = "Perceptron\n"
-        for t_datum in self.training_data:
-            string += f"Inputs: {t_datum[INPUT]}, Output: {t_datum[OUTPUT]}\n"
+        for i, t_datum in enumerate(self.training_data):
+            weights_str = "["
+            for j, w in enumerate(self.weights[i]):
+                weights_str += f"{w: 2.2f}"
+                if j != len(self.weights[i]) - 1:
+                    weights_str += ", "
+            weights_str += "]"
+            string += f"Inputs: {t_datum[INPUT]}, Weights: {weights_str}, Output: {t_datum[OUTPUT]}\n"
         return string
 
     def train(self):
@@ -38,7 +49,6 @@ class Perceptron:
         not_converged = True
         total_error = 0
         while not_converged:
-            # logic
             for t_datum in self.training_data:
                 o = self._compute_output()
                 E = t_datum[OUTPUT] - o
