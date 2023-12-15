@@ -28,6 +28,9 @@ if __name__ == "__main__":
     p.train()
     print(p)
 
+    # Task 2: TensorFlow
+    # See /Task 2/a07_q2.pdf
+
     # Task 3: Applying Neural Models
     # I was unable to complete this section. I have included the start of my copied Question/Answer notebook tutorial,
     # chosen because I heard from some classmates that that one took the least time to train. I was not able to train
